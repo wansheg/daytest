@@ -53,7 +53,7 @@ int main()
   for( i = 0; i < container_length; i++ ) {
     float* data = malloc( sizeof( float ) * n );
     for( j = 0; j < n; j++ ) {
-      data[j] = j* (float) n + i ;
+      data[j] = 1;
     }
     containers[i].internal.len = n;
     containers[i].internal.array = malloc( sizeof( float ) * n );
@@ -61,7 +61,7 @@ int main()
     containers[i].array_ptr = containers[i].internal.result;
     for ( j = 0; j < n; j++ ) {
       containers[i].internal.array[j] = data[j];
-      containers[i].array_ptr[j] = data[j] - 11;
+      containers[i].internal.result[j] = data[j] ;
     }
   }
 
@@ -70,6 +70,12 @@ int main()
     #pragma acc parallel loop
     for ( j = 0; j < containers[i].internal.len; j++ ) {
       containers[i].internal.result[j] = containers[i].internal.array[j] * 2;
+    }
+  }
+
+  for ( i = 0; i < container_length; i++ ) {
+    for ( j = 0; j < n; j++ ) {
+      printf( "%lf ", containers[i].array_ptr[i] );
     }
   }
 }
